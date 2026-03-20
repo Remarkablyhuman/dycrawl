@@ -1,0 +1,8 @@
+node_modules/
+dist/
+cookies.json
+debug_*.png
+debug_*.html
+debug_*.txt
+.claude
+claude.md

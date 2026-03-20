@@ -1,0 +1,174 @@
+{
+  "usableSessionsCount": 2,
+  "retiredSessionsCount": 0,
+  "sessions": [
+    {
+      "id": "session_MyK0pfs1g0",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.1",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2026-03-20T22:09:36.652Z",
+      "createdAt": "2026-03-20T21:19:36.652Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_1qJzGQHWKD",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.1",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "__ac_nonce",
+            "value": "069bdb9ed0036f9bfc0aa",
+            "expires": "2026-03-20T21:49:41.353Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.764Z",
+            "lastAccessed": "2026-03-20T21:19:49.764Z"
+          },
+          {
+            "key": "__ac_signature",
+            "value": "_02B4Z6wo00f01-lbtWQAAIDBHzcjnXRY7fPpe7HAAJP069",
+            "expires": "2027-03-20T21:19:41.000Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.765Z",
+            "lastAccessed": "2026-03-20T21:19:49.765Z"
+          },
+          {
+            "key": "SEARCH_RESULT_LIST_TYPE",
+            "value": "%22single%22",
+            "expires": "2027-03-20T21:19:42.675Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.765Z",
+            "lastAccessed": "2026-03-20T21:19:49.765Z"
+          },
+          {
+            "key": "ttwid",
+            "value": "1%7CjJhq2i2B45Nk8bxvMO6AudqLzcBTtjRyfuEAVblu_Cc%7C1774041582%7Ca26cc9ad6c4f6b6469b97b6bbdeab2089ba85fa5329890efcd09d476e330f257",
+            "expires": "2027-03-15T21:19:42.675Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.767Z",
+            "lastAccessed": "2026-03-20T21:19:49.767Z"
+          },
+          {
+            "key": "x-web-secsdk-uid",
+            "value": "bd44801a-3fe0-48ff-ba43-0543f86a90c7",
+            "expires": "2026-03-20T22:09:49.763Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.768Z",
+            "lastAccessed": "2026-03-20T21:19:49.768Z"
+          },
+          {
+            "key": "home_can_add_dy_2_desktop",
+            "value": "%220%22",
+            "expires": "2026-03-27T21:19:45.961Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.768Z",
+            "lastAccessed": "2026-03-20T21:19:49.768Z"
+          },
+          {
+            "key": "IsDouyinActive",
+            "value": "true",
+            "expires": "2026-03-27T21:19:46.161Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.768Z",
+            "lastAccessed": "2026-03-20T21:19:49.768Z"
+          },
+          {
+            "key": "fpk1",
+            "value": "U2FsdGVkX19C3fc7wQgLo2aiGoqAomuwUh2MznAs7Ewne49YDONRMOZmFLStBbkZIzCrQsJpVM34p809WcLcow==",
+            "expires": "2027-04-24T21:19:46.000Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.769Z",
+            "lastAccessed": "2026-03-20T21:19:49.769Z"
+          },
+          {
+            "key": "fpk2",
+            "value": "b6070f97dd99fd1a1f729156efd61e89",
+            "expires": "2027-04-24T21:19:46.000Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.769Z",
+            "lastAccessed": "2026-03-20T21:19:49.769Z"
+          },
+          {
+            "key": "csrf_session_id",
+            "value": "305c68fd185be81b1d8e1bd8918707ff",
+            "expires": "2026-03-20T22:09:49.763Z",
+            "domain": "www.douyin.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": true,
+            "creation": "2026-03-20T21:19:49.769Z",
+            "lastAccessed": "2026-03-20T21:19:49.769Z"
+          },
+          {
+            "key": "SEARCH_UN_LOGIN_PV_CURR_DAY",
+            "value": "%7B%22date%22%3A1774041586564%2C%22count%22%3A1%7D",
+            "expires": "2027-04-24T21:19:46.564Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.769Z",
+            "lastAccessed": "2026-03-20T21:19:49.769Z"
+          },
+          {
+            "key": "odin_tt",
+            "value": "e0388e5b11b44f43db149347bc2bb525e0b860649dd262f4b4c7eee2ba41435789ce365c23eab854d9620331fa26f873155b7390dda4b6ddf347d45f0387d0698381dc4d909cd0fd1f61272d71b9edda",
+            "expires": "2027-03-20T21:19:47.011Z",
+            "domain": "douyin.com",
+            "path": "/",
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2026-03-20T21:19:49.769Z",
+            "lastAccessed": "2026-03-20T21:19:49.769Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2026-03-20T22:09:36.653Z",
+      "createdAt": "2026-03-20T21:19:36.653Z",
+      "usageCount": 1,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    }
+  ]
+}

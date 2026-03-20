@@ -1,0 +1,21 @@
+{
+  "name": "dycrawler",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "crawl": "node --loader ts-node/esm src/crawl.ts",
+    "crawl:dev": "ts-node --esm src/crawl.ts"
+  },
+  "dependencies": {
+    "crawlee": "^3.10.0",
+    "playwright": "^1.50.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}

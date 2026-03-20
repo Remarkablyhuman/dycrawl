@@ -1,0 +1,9 @@
+{
+	"id": "bU4c6Vh32vUGzSk",
+	"json": "{\"id\":\"bU4c6Vh32vUGzSk\",\"url\":\"https://www.douyin.com/search/%E6%90%9E%E7%AC%91?type=video\",\"loadedUrl\":\"https://www.douyin.com/search/%E6%90%9E%E7%AC%91?type=video\",\"uniqueKey\":\"https://www.douyin.com/search/%E6%90%9E%E7%AC%91?type=video\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-03-20T21:20:13.831Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.douyin.com/search/%E6%90%9E%E7%AC%91?type=video",
+	"url": "https://www.douyin.com/search/%E6%90%9E%E7%AC%91?type=video"
+}
