@@ -11,9 +11,11 @@ export const supabase = createClient(url, anon);
 export const supabaseAdmin = createClient(url, service);
 
 export type AdminStatus = "new" | "ignored" | "candidate" | "queued" | "done";
+export type Platform = "douyin" | "wechat";
 
 export interface HotPost {
   id: string;
+  platform: Platform;
   video_id: string;
   url: string;
   title: string | null;

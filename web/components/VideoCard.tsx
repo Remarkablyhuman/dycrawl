@@ -81,14 +81,19 @@ export function VideoCard({ post, onStatus }: Props) {
           </span>
         </div>
 
-        {/* Keyword badge */}
-        {post.keyword_source && (
-          <div className="absolute top-2 right-2">
+        {/* Platform + keyword badge */}
+        <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+          {post.platform === "wechat" && (
+            <span className="rounded bg-green-700/80 px-1.5 py-0.5 text-[10px] text-green-200 font-mono">
+              微信
+            </span>
+          )}
+          {post.keyword_source && (
             <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-zinc-400 font-mono">
               {post.keyword_source}
             </span>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Scores overlay at bottom of image */}
         <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end">

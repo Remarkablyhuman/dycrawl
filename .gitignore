@@ -1,8 +1,17 @@
 node_modules/
+.env
 dist/
 cookies.json
+wechat_cookies.json
 debug_*.png
 debug_*.html
 debug_*.txt
 .claude
 claude.md
+
+# runtime state + login cookies (storage/cookies.txt is a secret; crawlee
+# key_value_stores / request_queues are transient)
+storage/
+
+# raw captured API samples — real account PII / 视频号助手 responses, large; not source
+capture/

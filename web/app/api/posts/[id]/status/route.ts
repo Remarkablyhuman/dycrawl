@@ -13,12 +13,25 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 
-  const { error } = await supabaseAdmin
+  const { data: post, error } = await supabaseAdmin
     .from("hot_posts")
     .update({ admin_status: status })
-    .eq("id", id);
+    .eq("id", id)
+    .select("url")
+    .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  // When queued, create a media job for the worker to pick up
+  if (status === "queued") {
+    const { error: jobError } = await supabaseAdmin
+      .from("post_media_jobs")
+      .upsert(
+        { hot_post_id: id, status: "pending", source_video_url: post.url },
+        { onConflict: "hot_post_id", ignoreDuplicates: true }
+      );
+    if (jobError) return NextResponse.json({ error: jobError.message }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

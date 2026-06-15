@@ -16,11 +16,12 @@ import { chromium } from "playwright-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { existsSync } from "fs";
 import { score, printResults, type VideoMeta, type ScoredVideo } from "./scorer.js";
+import { upsertVideos } from "./db/upsert.js";
 
 chromium.use(StealthPlugin());
 
-const KEYWORD = process.env.KEYWORD ?? "搞笑";
-const MAX_VIDEOS = parseInt(process.env.MAX_VIDEOS ?? "20", 10);
+const KEYWORD = process.env.KEYWORD ?? "洛杉矶";
+const MAX_VIDEOS = parseInt(process.env.MAX_VIDEOS ?? "30", 10);
 const HEADED = process.env.HEADED === "1";
 const LOGIN = process.env.LOGIN === "1"; // open browser for manual login, save session, then exit
 const COOKIE_FILE = process.env.COOKIE_FILE ?? "./cookies.json";
@@ -73,6 +74,7 @@ function parseAweme(aweme: DouyinAweme, keyword: string): VideoMeta | null {
   const author = aweme.author ?? {};
 
   return {
+    platform: "douyin" as const,
     video_id: id,
     url: aweme.share_url ?? `https://www.douyin.com/video/${id}`,
     title: aweme.desc ?? "",
@@ -154,8 +156,8 @@ const ctx = await browser.newContext({
   userAgent:
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
     "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-  // Load saved cookies if available
-  ...(existsSync(COOKIE_FILE)
+  // Load saved cookies if available (skip in LOGIN mode to force fresh session)
+  ...(!LOGIN && existsSync(COOKIE_FILE)
     ? { storageState: COOKIE_FILE }
     : {}),
 });
@@ -300,4 +302,8 @@ if (videos.length === 0) {
 } else {
   const scored: ScoredVideo[] = videos.map(score);
   printResults(scored, KEYWORD);
+
+  process.stdout.write("\nSaving to Supabase…");
+  await upsertVideos(scored);
+  console.log(` ${scored.length} rows upserted into hot_posts.`);
 }

@@ -1,4 +1,5 @@
 export interface VideoMeta {
+  platform: "douyin" | "wechat";
   video_id: string;
   url: string;
   title: string;

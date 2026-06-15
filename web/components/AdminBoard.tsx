@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { AdminStatus, HotPost } from "@/lib/supabase";
+import type { AdminStatus, HotPost, Platform } from "@/lib/supabase";
 import { VideoCard } from "./VideoCard";
 
 interface Props {
@@ -10,24 +10,33 @@ interface Props {
   currentStatus: string;
   currentSort: string;
   currentKeyword: string;
+  currentPlatform: Platform | "all";
   keywords: string[];
   error?: string;
 }
 
+const PLATFORM_FILTERS: { label: string; value: Platform | "all" }[] = [
+  { label: "All",     value: "all"     },
+  { label: "Douyin",  value: "douyin"  },
+  { label: "WeChat",  value: "wechat"  },
+];
+
 export function AdminBoard({
-  posts, statusFilters, currentStatus, currentSort, currentKeyword, keywords, error
+  posts, statusFilters, currentStatus, currentSort, currentKeyword, currentPlatform, keywords, error
 }: Props) {
   const router = useRouter();
 
   function nav(updates: Record<string, string>) {
     const params = new URLSearchParams({
-      status: currentStatus,
-      sort:   currentSort,
-      keyword: currentKeyword,
+      status:   currentStatus,
+      sort:     currentSort,
+      keyword:  currentKeyword,
+      platform: currentPlatform,
       ...updates,
     });
-    // remove empty
-    if (!params.get("keyword")) params.delete("keyword");
+    // remove empty / default params
+    if (!params.get("keyword"))                    params.delete("keyword");
+    if (params.get("platform") === "all")          params.delete("platform");
     router.push(`/admin?${params.toString()}`);
   }
 
@@ -52,6 +61,23 @@ export function AdminBoard({
             <span className="ml-2 rounded bg-zinc-800 px-2 py-0.5 font-mono text-[11px] text-zinc-400">
               {posts.length} videos
             </span>
+          </div>
+
+          {/* Platform */}
+          <div className="flex items-center gap-1">
+            {PLATFORM_FILTERS.map((p) => (
+              <button
+                key={p.value}
+                onClick={() => nav({ platform: p.value })}
+                className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
+                  currentPlatform === p.value
+                    ? "bg-zinc-700 text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-300"
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
           </div>
 
           {/* Sort */}

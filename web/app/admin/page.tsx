@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type { AdminStatus, HotPost } from "@/lib/supabase";
+import type { AdminStatus, HotPost, Platform } from "@/lib/supabase";
 import { AdminBoard } from "@/components/AdminBoard";
 
 const STATUS_FILTERS: { label: string; value: AdminStatus | "all" }[] = [
@@ -16,22 +16,24 @@ export const revalidate = 0;
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; sort?: string; keyword?: string }>;
+  searchParams: Promise<{ status?: string; sort?: string; keyword?: string; platform?: string }>;
 }) {
   const params = await searchParams;
-  const status = params.status ?? "new";
-  const sort   = params.sort   ?? "trend";
-  const keyword = params.keyword ?? "";
+  const status   = params.status   ?? "new";
+  const sort     = params.sort     ?? "trend";
+  const keyword  = params.keyword  ?? "";
+  const platform = (params.platform ?? "all") as Platform | "all";
 
-  let query = supabase
-    .from("hot_posts")
-    .select("*");
+  let query = supabase.from("hot_posts").select("*");
 
   if (status !== "all") {
     query = query.eq("admin_status", status);
   }
   if (keyword) {
     query = query.eq("keyword_source", keyword);
+  }
+  if (platform !== "all") {
+    query = query.eq("platform", platform);
   }
 
   if (sort === "opportunity") {
@@ -61,6 +63,7 @@ export default async function AdminPage({
       currentStatus={status}
       currentSort={sort}
       currentKeyword={keyword}
+      currentPlatform={platform}
       keywords={keywords}
       error={error?.message}
     />
