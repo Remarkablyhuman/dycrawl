@@ -121,10 +121,13 @@ async function transcribe(audioPath: string): Promise<{
   duration: number;
   segments: unknown;
 }> {
+  // gpt-4o-mini-transcribe only supports 'json' | 'text' (verbose_json is
+  // whisper-1 only). 'json' returns text only — duration/segments come back
+  // undefined and fall back to 0/null below; the guest flow only needs the text.
   const resp = await openai.audio.transcriptions.create({
     model: "gpt-4o-mini-transcribe",
     file: createReadStream(audioPath) as never,
-    response_format: "verbose_json",
+    response_format: "json",
     language: "zh",
   });
 
