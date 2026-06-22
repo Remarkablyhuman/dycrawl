@@ -21,7 +21,7 @@
 import { spawn } from "child_process";
 import { claimNextJob, finishJob, failJob, recoverStuckRunning, type CrawlJob } from "./db/jobs.js";
 import { getCapturedVideoIds } from "./db/comments.js";
-import { enqueueTranscribeJobs } from "./db/media.js";
+import { enqueueHomeRecommendedJobs } from "./db/media.js";
 import { supabase } from "./db/client.js";
 
 const POLL_MS = parseInt(process.env.RUNNER_POLL_MS ?? "15000", 10);
@@ -58,13 +58,15 @@ async function runHotpostSearch(
   const script = platform === "wechat" ? "src/crawl_wechat.ts" : "src/crawl.ts";
   const keywords = job.input?.keywords ?? [];
   const max = String(job.input?.max_videos_per_keyword ?? 30);
+  // controlled industry KEY for this batch; passed to the child as env (string)
+  const industry = typeof job.input?.industry === "string" ? job.input.industry : "";
   const since = new Date().toISOString();
 
   if (keywords.length === 0) throw new Error("no keywords in job input");
 
   for (const kw of keywords) {
     console.log(`\n[job ${job.id}] crawling "${kw}" (${platform}, max ${max})…`);
-    await runScript(script, { KEYWORD: kw, MAX_VIDEOS: max, HEADED });
+    await runScript(script, { KEYWORD: kw, MAX_VIDEOS: max, HEADED, INDUSTRY: industry });
     // polite pause between keywords (5–10s) to stay under the radar
     await sleep(5_000 + Math.floor((Date.now() % 5_000)));
   }
@@ -88,15 +90,15 @@ async function runHotpostSearch(
     }
   }
 
-  // Transcription phase (douyin only): enqueue the top-N freshly-captured posts
-  // for the local worker.ts to download + transcribe. Default N=10 (auto top-N
-  // by trend_score); override via job.input.transcribe_top_n.
+  // Transcription phase (douyin only): v2 auto-enqueue only the posts the guest
+  // home 今日推荐 will actually surface — each chosen industry's top-trend post +
+  // the global top — aligning transcription spend with what's shown. Replaces the
+  // old top-N-by-trend preheat. (See plan/crawler/transcription-strategy.html v2.)
   let transcribe_enqueued = 0;
   if (platform === "douyin") {
-    const topN = Number(job.input?.transcribe_top_n ?? 10);
-    transcribe_enqueued = await enqueueTranscribeJobs(keywords, since, topN);
+    transcribe_enqueued = await enqueueHomeRecommendedJobs();
     if (transcribe_enqueued > 0) {
-      console.log(`\n[job ${job.id}] enqueued ${transcribe_enqueued} transcription job(s)`);
+      console.log(`\n[job ${job.id}] enqueued ${transcribe_enqueued} home-recommended transcription job(s)`);
     }
   }
 
