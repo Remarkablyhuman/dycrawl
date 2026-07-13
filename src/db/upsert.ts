@@ -1,7 +1,10 @@
 import { supabase } from "./client.js";
 import type { ScoredVideo } from "../scorer.js";
 
-export async function upsertVideos(videos: ScoredVideo[]): Promise<void> {
+// `industry` is a controlled KEY from the crawl job (crawl_jobs.input.industry),
+// stamped on every row this job captures. '' / undefined → null (未分类),
+// which the app then backfills via /api/admin/classify-hot-posts.
+export async function upsertVideos(videos: ScoredVideo[], industry: string | null = null): Promise<void> {
   if (videos.length === 0) return;
 
   const rows = videos.map((v) => ({
@@ -12,6 +15,7 @@ export async function upsertVideos(videos: ScoredVideo[]): Promise<void> {
     cover_image:           v.cover_image,
     publish_time:          v.publish_time?.toISOString() ?? null,
     keyword_source:        v.keyword_source,
+    industry:              industry || null,
     author_name:           v.author_name,
     author_id:             v.author_id,
     author_follower_count: v.author_follower_count,

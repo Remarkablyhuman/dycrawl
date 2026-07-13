@@ -124,8 +124,18 @@ async function loop(): Promise<void> {
         } else {
           throw new Error(`job_type "${job.job_type}" not yet supported by runner`);
         }
-        await finishJob(job.id, result);
-        console.log(`=== job ${job.id} succeeded ===`, result);
+        // Work is done and already persisted (crawl.ts upserts hot_posts directly).
+        // Marking the job 'succeeded' is best-effort bookkeeping: if it still fails
+        // after retries, log loudly but DON'T fall through to failJob — re-queuing
+        // would re-crawl data we already have.
+        try {
+          await finishJob(job.id, result);
+          console.log(`=== job ${job.id} succeeded ===`, result);
+        } catch (be) {
+          const bmsg = be instanceof Error ? be.message : String(be);
+          console.error(`⚠️  job ${job.id} WORK SUCCEEDED but marking 'succeeded' failed: ${bmsg}`);
+          console.error(`    Data is saved. Reconcile crawl_jobs.status manually if it stays 'running'.`);
+        }
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
         console.error(`job ${job.id} failed: ${msg}`);

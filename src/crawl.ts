@@ -15,13 +15,14 @@
 import { chromium } from "playwright-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { existsSync } from "fs";
-import { score, printResults, type VideoMeta, type ScoredVideo } from "./scorer.js";
+import { score, printResults, filterLowEngagement, MIN_ENGAGEMENT, type VideoMeta, type ScoredVideo } from "./scorer.js";
 import { upsertVideos } from "./db/upsert.js";
 
 chromium.use(StealthPlugin());
 
 const KEYWORD = process.env.KEYWORD ?? "洛杉矶";
 const MAX_VIDEOS = parseInt(process.env.MAX_VIDEOS ?? "30", 10);
+const INDUSTRY = process.env.INDUSTRY || null; // controlled industry KEY for this batch
 const HEADED = process.env.HEADED === "1";
 const LOGIN = process.env.LOGIN === "1"; // open browser for manual login, save session, then exit
 const COOKIE_FILE = process.env.COOKIE_FILE ?? "./cookies.json";
@@ -293,10 +294,18 @@ await browser.close();
 
 // ── output results ────────────────────────────────────────────────────────────
 
-const videos = [...collected.values()].slice(0, MAX_VIDEOS);
+const captured = [...collected.values()];
+const kept = filterLowEngagement(captured);
+if (kept.length < captured.length) {
+  console.log(
+    `\nFiltered out ${captured.length - kept.length} low-like video(s) ` +
+    `(likes < ${MIN_ENGAGEMENT}).`,
+  );
+}
+const videos = kept.slice(0, MAX_VIDEOS);
 
 if (videos.length === 0) {
-  console.log("\nNo videos captured via API interception.");
+  console.log("\nNo videos to save (none captured, or all below the engagement floor).");
   console.log("Try running with HEADED=1 to see if there's a CAPTCHA to solve:");
   console.log(`  HEADED=1 KEYWORD="${KEYWORD}" node --loader ts-node/esm src/crawl.ts`);
 } else {
@@ -304,6 +313,6 @@ if (videos.length === 0) {
   printResults(scored, KEYWORD);
 
   process.stdout.write("\nSaving to Supabase…");
-  await upsertVideos(scored);
+  await upsertVideos(scored, INDUSTRY);
   console.log(` ${scored.length} rows upserted into hot_posts.`);
 }
